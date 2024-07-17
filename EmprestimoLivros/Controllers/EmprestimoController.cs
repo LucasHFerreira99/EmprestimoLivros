@@ -1,6 +1,7 @@
 ﻿using EmprestimoLivros.Data;
 using EmprestimoLivros.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
 
 namespace EmprestimoLivros.Controllers
 {
@@ -27,7 +28,7 @@ namespace EmprestimoLivros.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Cadastrar(EmprestimosModel emprestimos)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _db.Emprestimos.Add(emprestimos);
                 _db.SaveChanges();
@@ -38,12 +39,12 @@ namespace EmprestimoLivros.Controllers
 
         public IActionResult Editar(int? id)
         {
-            if(id == null || id == 0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
             EmprestimosModel emprestimo = _db.Emprestimos.FirstOrDefault(x => x.Id == id);
-            if(emprestimo == null)
+            if (emprestimo == null)
             {
                 return NotFound();
             }
@@ -52,6 +53,7 @@ namespace EmprestimoLivros.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Editar(EmprestimosModel emprestimo)
         {
             if (ModelState.IsValid)
@@ -63,9 +65,30 @@ namespace EmprestimoLivros.Controllers
             return View(emprestimo);
         }
 
-        public IActionResult Excluir()
+        public IActionResult Excluir(int? id)
         {
-            return View();
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            EmprestimosModel emprestimo = _db.Emprestimos.FirstOrDefault(x => x.Id == id);
+
+            return View(emprestimo);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Excluir(EmprestimosModel emprestimo)
+        {
+            if (emprestimo == null)
+            {
+                return NotFound();
+            }
+            _db.Remove(emprestimo);
+            _db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
     }
 }
