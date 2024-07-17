@@ -17,5 +17,24 @@ namespace EmprestimoLivros.Controllers
             IEnumerable<EmprestimosModel> emprestimos = _db.Emprestimos;
             return View(emprestimos);
         }
+
+        public IActionResult Cadastrar()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Cadastrar(EmprestimosModel emprestimos)
+        {
+            if(ModelState.IsValid)
+            {
+                _db.Emprestimos.Add(emprestimos);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View();
+            
+        }
     }
 }
