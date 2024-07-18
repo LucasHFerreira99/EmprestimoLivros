@@ -30,7 +30,7 @@ namespace EmprestimoLivros.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DataUltimaAtualização")
+                    b.Property<DateTime>("DataEmprestimo")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Fornecedor")

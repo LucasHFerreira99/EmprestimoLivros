@@ -32,6 +32,7 @@ namespace EmprestimoLivros.Controllers
         {
             if (ModelState.IsValid)
             {
+                emprestimos.DataEmprestimo = DateTime.Now;
                 _db.Emprestimos.Add(emprestimos);
                 _db.SaveChanges();
 
@@ -63,7 +64,14 @@ namespace EmprestimoLivros.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Emprestimos.Update(emprestimo);
+
+                var emprestimoDb = _db.Emprestimos.Find(emprestimo.Id);
+
+                emprestimoDb.Fornecedor = emprestimo.Fornecedor;
+                emprestimoDb.Recebedor = emprestimo.Recebedor;
+                emprestimoDb.LivroEmprestado = emprestimo.LivroEmprestado;
+
+                _db.Emprestimos.Update(emprestimoDb);
                 _db.SaveChanges();
 
                 TempData["MensagemSucesso"] = "Edição Realizada com sucesso!";
@@ -133,7 +141,7 @@ namespace EmprestimoLivros.Controllers
             {
                 dados.ForEach(emprestimos =>
                 {
-                    dataTable.Rows.Add(emprestimos.Recebedor, emprestimos.Fornecedor, emprestimos.LivroEmprestado, emprestimos.DataUltimaAtualização); ;
+                    dataTable.Rows.Add(emprestimos.Recebedor, emprestimos.Fornecedor, emprestimos.LivroEmprestado, emprestimos.DataEmprestimo); ;
                 });
             }
             return dataTable;
