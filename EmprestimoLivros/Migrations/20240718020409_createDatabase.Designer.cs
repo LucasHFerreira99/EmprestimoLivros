@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmprestimoLivros.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240716212017_CriarBanco")]
-    partial class CriarBanco
+    [Migration("20240718020409_createDatabase")]
+    partial class createDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,7 +33,7 @@ namespace EmprestimoLivros.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DataUltimaAtualização")
+                    b.Property<DateTime>("DataEmprestimo")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Fornecedor")
