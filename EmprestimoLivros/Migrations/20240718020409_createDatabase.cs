@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EmprestimoLivros.Migrations
 {
     /// <inheritdoc />
-    public partial class CriarBanco : Migration
+    public partial class createDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,7 +27,7 @@ namespace EmprestimoLivros.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     LivroEmprestado = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    DataUltimaAtualização = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    DataEmprestimo = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
