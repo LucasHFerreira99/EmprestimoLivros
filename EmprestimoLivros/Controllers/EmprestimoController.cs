@@ -1,6 +1,8 @@
-﻿using EmprestimoLivros.Data;
+﻿using ClosedXML.Excel;
+using EmprestimoLivros.Data;
 using EmprestimoLivros.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Reflection.Metadata.Ecma335;
 
 namespace EmprestimoLivros.Controllers
@@ -98,6 +100,43 @@ namespace EmprestimoLivros.Controllers
 
 
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Exportar()
+        {
+            var dados = GetDados();
+
+            using (XLWorkbook workBook = new XLWorkbook())
+            {
+                workBook.AddWorksheet(dados, "Dados Empréstimos");
+                
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    workBook.SaveAs(ms);
+                    return File(ms.ToArray(),"application/vnd.openxmlformats-officedocument.spredsheetml.sheet", "Emprestimo.xlsx" );
+                }
+            }
+        }
+
+        private DataTable GetDados()
+        {
+            DataTable dataTable = new DataTable();
+
+            dataTable.TableName = "Dados Empréstimos";
+            dataTable.Columns.Add("Recebedor", typeof(string));
+            dataTable.Columns.Add("Fornecedor", typeof(string));
+            dataTable.Columns.Add("Livro", typeof(string));
+            dataTable.Columns.Add("Data do empréstimo", typeof(DateTime));
+
+            var dados = _db.Emprestimos.ToList();
+            if (dados.Count > 0)
+            {
+                dados.ForEach(emprestimos =>
+                {
+                    dataTable.Rows.Add(emprestimos.Recebedor, emprestimos.Fornecedor, emprestimos.LivroEmprestado, emprestimos.DataUltimaAtualização); ;
+                });
+            }
+            return dataTable;
         }
 
     }
